@@ -19,7 +19,9 @@ const Hero = () => {
     }, []);
 
     return (
-        <section className="min-h-screen flex flex-col lg:flex-row items-center justify-between px-5 sm:px-8 md:px-12 lg:px-24 py-8 sm:py-12 gap-8 lg:gap-12 overflow-hidden">
+        <section
+            id={'home'}
+            className="min-h-screen flex flex-col lg:flex-row items-center justify-between px-5 sm:px-8 md:px-12 lg:px-24 py-8 sm:py-12 gap-8 lg:gap-12 overflow-hidden">
             {/* Left Text Section */}
             <div className="flex-1 max-lg:mt-20 max-w-2xl text-center lg:text-left z-10 w-full">
                 <motion.h1
