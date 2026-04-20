@@ -1,213 +1,292 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { a } from 'framer-motion/client'
-import { FiGithub, FiLinkedin, FiMenu, FiX } from 'react-icons/fi'
-import { useState } from "react";
-import { navContent }  from '../constants/index.js';
-
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiGithub, FiLinkedin, FiMenu, FiX, FiSend } from 'react-icons/fi';
+import { useState, useEffect } from "react";
+import { navContent } from '../constants/index.js';
+import { Link as ScrollLink } from 'react-scroll';
 
 const Header = () => {
-    // Toggle the Menu open/close
-   const [isOpen, setIsOpen] = useState(false);
-   const toggleMenu = () => setIsOpen(!isOpen);
-
-   // State to track if the contact form is open
+    const [isOpen, setIsOpen] = useState(false);
     const [contactFormOpen, setContactFormOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [activeSection, setActiveSection] = useState('home');
+    const [formStatus, setFormStatus] = useState({ type: '', message: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const toggleMenu = () => setIsOpen(!isOpen);
     const openContactForm = () => setContactFormOpen(true);
     const closeContactForm = () => setContactFormOpen(false);
 
+    // Handle scroll effects
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+
+            // Update active section based on scroll position
+            const sections = ['home', 'about', 'projects', 'contact'];
+            const scrollPos = window.scrollY + 100;
+            for (const section of sections) {
+                const element = document.getElementById(section);
+                if (element) {
+                    const offsetTop = element.offsetTop;
+                    const offsetBottom = offsetTop + element.offsetHeight;
+                    if (scrollPos >= offsetTop && scrollPos < offsetBottom) {
+                        setActiveSection(section);
+                        break;
+                    }
+                }
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setFormStatus({ type: '', message: '' });
+
+        // API call
+        setTimeout(() => {
+            setFormStatus({ type: 'success', message: 'Message sent! I’ll get back to you soon.' });
+            setIsSubmitting(false);
+            setTimeout(() => {
+                setFormStatus({ type: '', message: '' });
+                closeContactForm();
+            }, 2000);
+        }, 1500);
+    };
 
     return (
-        <header className={'absolute w-full z-20 transition-all duration-300'}>
+        <>
+            <header
+                className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+                    scrolled
+                        ? 'bg-black/80 backdrop-blur-xl shadow-lg'
+                        : 'bg-transparent'
+                }`}
+            >
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
 
-            <div className={'container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20'}>
+                    {/* LOGO with 3D tilt effect */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ type: "spring", stiffness: 100, damping: 25, delay: 0.3 }}
+                        className="flex items-center cursor-none group"
+                        whileHover={{ scale: 1.02 }}
+                    >
+                        <div className="flex items-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white h-10 w-10 justify-center rounded-xl font-bold text-xl mr-3 shadow-lg group-hover:shadow-cyan-500/30 transition-all">
+                            A
+                        </div>
+                        <span className="text-xl font-bold bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">
+                            Arkon
+                        </span>
+                    </motion.div>
 
-                {/*LOGO*/}
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                        type: 'spring',
-                        stiffness: 100,
-                        damping: 25,
-                        delay: 0.3,
-                        duration: 1.2,
-                    }}
-                    className={'flex items-center'}>
-                <div className={'flex items-center bg-linear-to-r from-gray-500 to-gray-100 text-black h-10 w-10 justify-center rounded-xl font-bold text-xl mr-3'}>
-                    A
-                </div>
-                <span className={'text-xl font-bold bg-linear-to-r from-gray-300 to-gray-100 bg-clip-text text-transparent'}>
-                    Arkon
-                </span>
-                </motion.div>
+                    {/* DESKTOP NAVIGATION */}
+                    <nav className="hidden lg:flex space-x-8">
+                        {navContent.map((item, i) => (
+                            <ScrollLink
+                                key={item}
+                                to={item.toLowerCase()}
+                                spy={true}
+                                smooth={true}
+                                offset={-70}
+                                duration={500}
+                                onSetActive={() => setActiveSection(item.toLowerCase())}
+                                className={`relative text-gray-300 hover:text-white transition-colors duration-300 font-medium group cursor-none ${
+                                    activeSection === item.toLowerCase() ? 'text-white' : ''
+                                }`}
+                            >
+                                {item}
+                                <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 ${
+                                    activeSection === item.toLowerCase() ? 'w-full' : 'w-0 group-hover:w-full'
+                                }`} />
+                            </ScrollLink>
+                        ))}
+                    </nav>
 
-                {/*Desktop Navigation*/}
-                <nav className={'lg:flex hidden space-x-8'}>
-                    {navContent.map((item, i) => (
+                    {/* DESKTOP SOCIAL + HIRE BUTTON */}
+                    <div className="hidden md:flex items-center  space-x-4">
                         <motion.a
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{
-                                type: 'spring',
-                                stiffness: 100,
-                                damping: 20,
-                                delay: 0.7 + i * 0.2,
-                                duration: 1.2,
-                            }}
-                        key={item}
-                        className={'relative text-gray-800 dark:text-gray-200 hover:text-slate-600 transition-colors duration-300 font-medium group'}
-                        href={'/'}>
-                            {item}
-                            <span className={'absolute bottom-0 left-0 w-0 h-0.5 bg-slate-500 group-hover:w-full transition-all duration-300'}></span>
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 1.3 }}
+                            href="https://github.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 cursor-none hover:text-white transition-colors duration-300"
+                            whileHover={{ y: -2 }}
+                        >
+                            <FiGithub className="w-5 h-5" />
                         </motion.a>
-                    ))}
-                </nav>
-
-                {/*Social icons - Desktop */}
-                <div className={'md:flex hidden items-center space-x-4'}>
-                    <motion.a
-                        initial={{ opacity: 0, scale: 0.5}}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{
-                            type: 'spring',
-                            stiffness: 100,
-                            duration: 0.8,
-                            delay: 1.3,
-                        }}
-                        className={'text-gray-700 dark:text-gray-300 hover:text-slate-600 dark:hover:slate-400 transition-colors duration-300 '} href={'/'}>
-                        <FiGithub className={'w-5 h-5 '} />
-                    </motion.a>
-                    <motion.a
-                        initial={{ opacity: 0, scale: 0.5}}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{
-                            type: 'spring',
-                            stiffness: 100,
-                            duration: 0.8,
-                            delay: 1.3,
-                        }}
-                        className={'text-gray-700 dark:text-gray-300 hover:text-slate-600 dark:hover:slate-400 transition-colors duration-300 '} href={'/'}>
-                        <FiLinkedin className={'w-5 h-5 '} />
-                    </motion.a>
-
-                {/*Hire Me Button */}
-                <motion.button
-                    onClick={openContactForm}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                        type: 'spring',
-                        stiffness: 100,
-                        damping: 15,
-                        duration: 0.9,
-                        delay: 1.6,
-                    }}
-                    className={'ml-4 px-4 py-2 rounded-xl bg-linear-to-r from-gray-400 to-gray-100 text-slate-600 font-bold hover:from-slate-600 hover:to-gray-800 hover:text-white transition-all duration-500 cursor-pointer'}>
-                    Hire Me
-                </motion.button>
-                </div>
-
-            {/* Mobile Menu Button */}
-                <div
-                    className={'md:hidden flex items-center'}>
-                    <motion.button
-                        whileTap={{ scale: 0.7 }}
-                        onClick={toggleMenu}
-                        className={'text-slate-600'}>
-                        {isOpen ? <FiX className={'h-6 w-6'} /> : <FiMenu className={'h-6 w-6'} />}
-                    </motion.button>
-                </div>
-            </div>
-                {/*Mobile Menu */}
-            <motion.div
-                initial={{ opacity: 0, height: 0}}
-                animate={{
-                    opacity : isOpen ? 1 : 0, height: isOpen ? 'auto' : 0,
-                }}
-                transition={{ duration: 0.5 }}
-                className={'md:hidden overflow-hidden bg-white dark:bg-gray-900 shadow-lg px-4 py-5 space-y-5'}>
-                <nav className={'flex flex-col space-y-3'} >
-                    {navContent.map((item) => (
-                        <a  onClick={toggleMenu}
-                            className={'text-gray-300 font-medium py-2'} key={item}
-                           href={'/'} >{item}</a>
-                    ))}
-                </nav>
-                <div className={'pt-4 border-t border-gray-200 dark:border-gray-700'}>
-                    <div className={'flex space-x-5'} >
-                    <a
-                        href={'/'}> <FiGithub className={'w-5 h-5 text-gray-300'} />
-                    </a>
-                    <a
-                        href={'/'}> <FiLinkedin className={'w-5 h-5 text-gray-300'} />
-                    </a>
-                    </div>
-                    <button onClick={ () => {
-                        toggleMenu()
-                        openContactForm()
-                    }} className={'mt-4 block w-full px-4 py-2 rounded-lg bg-linear-to-r from-gray-400 to-gray-100 text-slate-600 font-bold hover:from-slate-600 hover:to-gray-800 hover:text-white transition-all duration-500 cursor-pointer'}>
-                        Contact With Me
-                    </button>
-                </div>
-            </motion.div>
-        {/*  Contact Form  */}
-            <AnimatePresence>
-            {contactFormOpen && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={ { opacity: 1}}
-                    exit={{ opacity: 0 }}
-                    transition={{duration: 0.5}}
-                    className={'fixed inset-0 bg-black/50 backdrop-blur-xl z-20 flex items-center justify-center p-4'}
-
-                >
-                <motion.div
-                    initial={{ scale:0.8, opacity: 0, y:30 }}
-                    animate={ { opacity: 1, scale: 1, y:0 }}
-                    exit={{ scale: 0.8, opacity: 0, y:30 }}
-                    transition={{
-                        type: 'spring',
-                        stiffness: 200,
-                        duration: 0.9,
-                        damping: 30,
-                    }}
-                    className={'bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6'}>
-                    <div className={'flex justify-between items-center mb-4 '}>
-                    <h1 className={'text-2xl font-bold text-gray-300'}>Get In Touch
-                    </h1>
-                    <button onClick={closeContactForm} > <FiX className={'w-5 h-5 text-gray-300 font-extrabold'}/>
-                    </button>
-                </div>
-
-                {/*  Input Forms  */}
-                    <form className={'space-y-4'}>
-                        <div >
-                            <label htmlFor='name' className={'block text-sm font-medium text-gray-300 mb-1'}>Name
-                            </label>
-                            <input type='text' id='name' placeholder='Your Name' className={'w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-slate-600 focus:border-slate600 bg-gray-700'}/>
-                        </div>
-                        <div >
-                            <label htmlFor='email' className={'block text-sm font-medium text-gray-300 mb-1'}>Email
-                            </label>
-                            <input type='email' id='email' placeholder='Your Email' className={'w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-slate-600 focus:border-slate600 bg-gray-700'}/>
-                        </div>
-                        <div >
-                            <label htmlFor='message' className={'block text-sm font-medium text-gray-300 mb-1'}>Name
-                            </label>
-                            <textarea rows='4' id='message' placeholder='How can we help you?' className={'w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-slate-600 focus:border-slate600 bg-gray-700'}/>
-                        </div>
+                        <motion.a
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 1.4 }}
+                            href="https://linkedin.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 cursor-none hover:text-white transition-colors duration-300"
+                            whileHover={{ y: -2 }}
+                        >
+                            <FiLinkedin className="w-5 h-5" />
+                        </motion.a>
                         <motion.button
-                            type='submit'
-                            whileHover={{ scale:1.03 }}
-                            whileTap={{ scale: 0.96 }}
-                            className={'w-full px-4 py-2 bg-linear-to-r from-slate-600 to-slate-200 hover:from-slate-700 hover:to-gray-700 transition-all duration-300 rounded-lg shadow-md hover:shadow-slate-600/50 text-slate-300 hover:text-white'} >Send Message</motion.button>
-                    </form>
+                            onClick={openContactForm}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 1.6 }}
+                            className="px-5 py-2 rounded-full cursor-none bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-md hover:shadow-cyan-500/30 transition-all duration-300"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            Hire Me
+                        </motion.button>
+                    </div>
 
-                </motion.div>
-                </motion.div>
-            )}
+                    {/* MOBILE MENU BUTTON */}
+                    <div className="md:hidden flex items-center">
+                        <motion.button
+                            whileTap={{ scale: 0.7 }}
+                            onClick={toggleMenu}
+                            className="text-gray-300 p-2 rounded-lg backdrop-blur-sm bg-white/5"
+                        >
+                            {isOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
+                        </motion.button>
+                    </div>
+                </div>
+
+                {/* MOBILE MENU */}
+                <AnimatePresence>
+                    {isOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, x: '100%' }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: '100%' }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="fixed top-16 right-0 bottom-0 w-64 bg-black/90 backdrop-blur-2xl shadow-2xl z-50 p-6 flex flex-col gap-6 border-l border-white/10"
+                        >
+                            <nav className="flex flex-col gap-4">
+                                {navContent.map((item) => (
+                                    <ScrollLink
+                                        key={item}
+                                        to={item.toLowerCase()}
+                                        spy={true}
+                                        smooth={true}
+                                        offset={-70}
+                                        duration={500}
+                                        onClick={toggleMenu}
+                                        className="text-gray-300 hover:text-white text-lg font-medium py-2 border-b border-white/10 hover:border-cyan-400 transition-all"
+                                    >
+                                        {item}
+                                    </ScrollLink>
+                                ))}
+                            </nav>
+                            <div className="flex gap-5 pt-4 border-t border-white/20">
+                                <a href="https://github.com" target="_blank" className="text-gray-400 hover:text-white">
+                                    <FiGithub className="w-5 h-5" />
+                                </a>
+                                <a href="https://linkedin.com" target="_blank" className="text-gray-400 hover:text-white">
+                                    <FiLinkedin className="w-5 h-5" />
+                                </a>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    toggleMenu();
+                                    openContactForm();
+                                }}
+                                className="mt-2 w-full px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold transition-all hover:shadow-lg"
+                            >
+                                Contact Me
+                            </button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </header>
+
+            {/* CONTACT FORM MODAL */}
+            <AnimatePresence>
+                {contactFormOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
+                        onClick={closeContactForm}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ scale: 0.8, opacity: 0, y: 30 }}
+                            transition={{ type: "spring", stiffness: 200, damping: 30 }}
+                            className="bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md p-6 border border-gray-700"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="flex justify-between items-center mb-5">
+                                <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                                    Get In Touch
+                                </h2>
+                                <button onClick={closeContactForm} className="text-gray-400 hover:text-white">
+                                    <FiX className="w-5 h-5" />
+                                </button>
+                            </div>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="Your name"
+                                        className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        placeholder="your@email.com"
+                                        className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Message</label>
+                                    <textarea
+                                        rows="4"
+                                        required
+                                        placeholder="How can I help you?"
+                                        className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition"
+                                    />
+                                </div>
+                                {formStatus.message && (
+                                    <div className={`text-sm p-2 rounded ${formStatus.type === 'success' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                                        {formStatus.message}
+                                    </div>
+                                )}
+                                <motion.button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    className="w-full py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold flex items-center justify-center gap-2 shadow-md hover:shadow-cyan-500/30 transition-all disabled:opacity-70"
+                                >
+                                    {isSubmitting ? (
+                                        "Sending..."
+                                    ) : (
+                                        <>
+                                            Send Message <FiSend className="w-4 h-4" />
+                                        </>
+                                    )}
+                                </motion.button>
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )}
             </AnimatePresence>
-        </header>
-    )
-}
-export default Header
+        </>
+    );
+};
+
+export default Header;

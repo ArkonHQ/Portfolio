@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import Hero from "./components/Hero.jsx";
 import ParticlesBackground from "./components/ParticlesBackground.jsx";
 import CustomCursor from "./components/CustomCursor.jsx";
+import About from "./components/About.jsx";
 
 const App = () => {
     return (
@@ -9,6 +10,7 @@ const App = () => {
             <ParticlesBackground />
             <Header />
             <Hero />
+            <About />
             <CustomCursor />
         </div>
     );

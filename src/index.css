@@ -25,7 +25,7 @@ body {
     filter: blur(0.5px);
 }
 
-/* Foreground layer particles (faster scroll, brighter) */
+/* Foreground layer particles */
 .layer-fg .particle {
     @apply bg-gray-400;
     box-shadow: 0 0 6px rgba(156, 163, 175, 0.5);
@@ -37,8 +37,21 @@ body {
     box-shadow: 0 0 4px rgba(107, 114, 128, 0.4);
 }
 
-/* Background layer particles (slowest, darkest) */
+/* Background layer particles*/
 .layer-bg .particle {
     @apply bg-gray-600;
     box-shadow: 0 0 3px rgba(75, 85, 99, 0.3);
+}
+
+.section-spacing {
+    @apply min-h-screen mt-20 md:mt-30;
+}
+.text-heading {
+    @apply font-bold text-3xl md:text-4xl;
+}
+.headtext {
+    @apply mt-2 mb-2 text-xl;
+}
+.c-space {
+    @apply sm:px-10 px-5 lg:px-15;
 }
