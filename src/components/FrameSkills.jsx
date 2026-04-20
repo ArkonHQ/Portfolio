@@ -1,5 +1,5 @@
-import React from "react";
-import {skillsInner, skillsOuter} from "../constants/index.js";
+import React from "react" 
+import {skillsInner, skillsOuter} from "../constants/index.js" 
 
 const FramerSkills = () => {
     return (
@@ -12,7 +12,7 @@ const FramerSkills = () => {
                 {/* Outer orbit */}
                 <div className="absolute top-1/2 right-1/2 w-[400px] h-[400px] -mr-[200px] -mt-[200px] animate-[spin_24s_linear_infinite]">
                     {skillsOuter.map((skill, idx) => {
-                        const angle = (360 / skillsOuter.length) * idx;
+                        const angle = (360 / skillsOuter.length) * idx 
                         return (
                             <div
                                 key={skill.name}
@@ -26,14 +26,14 @@ const FramerSkills = () => {
                   {skill.name}
                 </span>
                             </div>
-                        );
+                        ) 
                     })}
                 </div>
 
                 {/* Inner orbit */}
                 <div className="absolute top-1/2 right-1/2 w-[260px] h-[260px] -mr-[130px] -mt-[130px] animate-[spin-reverse_18s_linear_infinite]">
                     {skillsInner.map((skill, idx) => {
-                        const angle = (360 / skillsInner.length) * idx;
+                        const angle = (360 / skillsInner.length) * idx 
                         return (
                             <div
                                 key={skill.name}
@@ -47,12 +47,12 @@ const FramerSkills = () => {
                   {skill.name}
                 </span>
                             </div>
-                        );
+                        ) 
                     })}
                 </div>
             </div>
         </div>
-    );
-};
+    ) 
+} 
 
-export default FramerSkills;
+export default FramerSkills 

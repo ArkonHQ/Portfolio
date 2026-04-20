@@ -1,79 +1,107 @@
-import gsap from "gsap";
-import { useRef, useEffect } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import FramerSkills from "./FrameSkills.jsx";
-import { focus } from '../constants/index.js';
+import gsap from "gsap"   
+import { useRef, useEffect } from "react"   
+import { ScrollTrigger } from "gsap/ScrollTrigger"   
+import FramerSkills from "./FrameSkills.jsx"   
+import { focus } from '../constants/index.js'   
 
 const About = () => {
-    const sectionRef = useRef(null);
-    const textRef = useRef(null);
-    const skillsOrbitRef = useRef(null);
-    const focusRef = useRef(null);
-    const badgeRef = useRef(null);
+    const sectionRef = useRef(null)   
+    const textRef = useRef(null)   
+    const skillsOrbitRef = useRef(null)   
+    const focusRef = useRef(null)   
+    const badgeRef = useRef(null)   
+    const starsRef = useRef([])   
+
+    const addToStars = (element) => {
+        if (element && !starsRef.current.includes(element)) {
+            starsRef.current.push(element)   
+        }
+    }   
 
     useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger)   
 
-        gsap.fromTo(textRef.current,
-            { y: 60, opacity: 0, filter: "blur(8px)" },
-            {
-                y: 0,
-                opacity: 1,
-                filter: "blur(0px)",
-                duration: 1,
-                ease: "power2.out",
+        // Store triggers to kill later
+        const triggers = []   
+
+        // Text animation
+        triggers.push(ScrollTrigger.create({
+            trigger: sectionRef.current,
+            start: "top 70%",
+            onEnter: () => {
+                gsap.fromTo(textRef.current,
+                    { y: 60, opacity: 0, filter: "blur(8px)" },
+                    { y: 0, opacity: 1, filter: "blur(0px)", duration: 1, ease: "power2.out" }
+                )   
+            },
+            toggleActions: "play none none reverse"
+        }))   
+
+        // Skills orbit animation
+        triggers.push(ScrollTrigger.create({
+            trigger: sectionRef.current,
+            start: "top 70%",
+            onEnter: () => {
+                gsap.fromTo(skillsOrbitRef.current,
+                    { scale: 0.8, opacity: 0 },
+                    { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(0.5)" }
+                )   
+            },
+            toggleActions: "play none none reverse"
+        }))   
+
+        // Focus section animation
+        triggers.push(ScrollTrigger.create({
+            trigger: sectionRef.current,
+            start: "top 70%",
+            onEnter: () => {
+                gsap.fromTo(focusRef.current,
+                    { x: 40, opacity: 0 },
+                    { x: 0, opacity: 1, duration: 0.6 }
+                )   
+            },
+            toggleActions: "play none none reverse"
+        }))   
+
+        // Badge animation
+        triggers.push(ScrollTrigger.create({
+            trigger: sectionRef.current,
+            start: "top 70%",
+            onEnter: () => {
+                gsap.fromTo(badgeRef.current,
+                    { y: 20, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.5, delay: 0.2 }
+                )   
+            },
+            toggleActions: "play none none reverse"
+        }))   
+
+        // Star animation (scroll‑linked)
+        starsRef.current.forEach((star, index) => {
+            const direction = index % 2 === 0 ? 1 : -1   
+            const speed = 0.5 + Math.random() * 0.5   
+            gsap.to(star, {
+                x: direction * (150 + (index % 10) * 20),   // horizontal travel distance
+                y: direction * (100 + (index % 8) * 15),    // vertical travel distance
+                rotate: direction * 360,                    // full rotation                 // 0.5 to 1.0 (higher = faster relative to scroll)
+                ease: "none",
                 scrollTrigger: {
                     trigger: sectionRef.current,
-                    start: "top 70%",
-                    toggleActions: "play none none reverse",
-                },
-            }
-        );
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: speed,
+                }
+            })   
+        })   
 
-        gsap.fromTo(skillsOrbitRef.current,
-            { scale: 0.8, opacity: 0 },
-            {
-                scale: 1,
-                opacity: 1,
-                duration: 0.8,
-                ease: "back.out(0.5)",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 70%",
-                    toggleActions: "play none none reverse",
-                },
-            }
-        );
-
-        gsap.fromTo(focusRef.current,
-            { x: 40, opacity: 0 },
-            {
-                x: 0,
-                opacity: 1,
-                duration: 0.6,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 70%",
-                    toggleActions: "play none none reverse",
-                },
-            }
-        );
-
-        gsap.fromTo(badgeRef.current,
-            { y: 20, opacity: 0 },
-            {
-                y: 0,
-                opacity: 1,
-                duration: 0.5,
-                delay: 0.2,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 70%",
-                    toggleActions: "play none none reverse",
-                },
-            }
-        );
-    }, []);
+        return () => {
+            triggers.forEach(trigger => trigger.kill())   
+            // Also kill star animations
+            ScrollTrigger.getAll().forEach(trigger => {
+                if (trigger.vars?.trigger === sectionRef.current) trigger.kill()   
+            })   
+        }   
+    }, [])   
 
     return (
         <section
@@ -81,23 +109,22 @@ const About = () => {
             ref={sectionRef}
             className="relative w-full py-24 px-6 md:px-12 lg:px-24 bg-white dark:bg-gray-950 overflow-hidden"
         >
-            {/* ========== Animated stars ========== */}
+            {/* ========== BACKGROUND – floating orbs + scroll‑animated stars ========== */}
             <div className="absolute inset-0 pointer-events-none z-0">
-
+                {/* Floating orbs (CSS only) */}
                 <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl animate-[float_20s_ease-in-out_infinite]" />
                 <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl animate-[float_25s_ease-in-out_infinite] delay-1000" />
                 <div className="absolute top-3/4 left-1/2 w-56 h-56 rounded-full bg-cyan-500/10 blur-3xl animate-[float_18s_ease-in-out_infinite] delay-500" />
 
-                {/* Animated stars Background */}
+                {/* Stars – NO CSS animation, only GSAP scroll movement */}
                 {[...Array(50)].map((_, i) => {
-                    const size = 2 + Math.random() * 4;
-                    const duration = 15 + Math.random() * 20;
-                    const delay = Math.random() * 10;
-                    const top = Math.random() * 100;
-                    const left = Math.random() * 100;
-                    const opacity = 0.2 + Math.random() * 0.5;
+                    const size = 2 + Math.random() * 4   
+                    const top = Math.random() * 100   
+                    const left = Math.random() * 100   
+                    const opacity = 0.2 + Math.random() * 0.5   
                     return (
                         <div
+                            ref={addToStars}
                             key={i}
                             className="absolute rounded-full bg-white"
                             style={{
@@ -106,17 +133,15 @@ const About = () => {
                                 top: `${top}%`,
                                 left: `${left}%`,
                                 opacity: opacity,
-                                animation: `drift ${duration}s linear infinite`,
-                                animationDelay: `${delay}s`,
                                 boxShadow: size > 4 ? `0 0 ${size}px rgba(255,255,255,0.6)` : 'none',
                             }}
                         />
-                    );
+                    )   
                 })}
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20">
-                {/* LEFT SIDE – About text */}
+                {/* LEFT SIDE – About text + Badge */}
                 <div ref={textRef} className="flex-1 space-y-6">
                     <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
                         About Me
@@ -146,7 +171,7 @@ const About = () => {
                     </div>
                 </div>
 
-                {/* RIGHT SIDE – Skills Orbit + Focus + Badge */}
+                {/* RIGHT SIDE – Skills Orbit + Focus */}
                 <div className="flex-1 flex flex-col gap-8">
                     <div ref={skillsOrbitRef} className="w-full h-80 rounded-2xl overflow-hidden">
                         <FramerSkills />
@@ -177,7 +202,7 @@ const About = () => {
                 </div>
             </div>
         </section>
-    );
-};
+    )   
+}   
 
-export default About;
+export default About   

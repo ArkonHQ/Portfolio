@@ -1,22 +1,22 @@
-import { motion } from 'framer-motion';
-import ParticlesText from "./ParticlesText.jsx";
-import { useState, useEffect } from "react";
+import { motion } from 'framer-motion'  
+import ParticlesText from "./ParticlesText.jsx"  
+import { useState, useEffect } from "react"  
 
 const Hero = () => {
-    const [particleScale, setParticleScale] = useState(2.5);
+    const [particleScale, setParticleScale] = useState(2.5)  
 
     useEffect(() => {
         const handleResize = () => {
-            const width = window.innerWidth;
-            if (width < 640) setParticleScale(2.0);
-            else if (width < 768) setParticleScale(2.2);
-            else if (width < 1024) setParticleScale(2.5);
-            else setParticleScale(2.2);
-        };
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+            const width = window.innerWidth  
+            if (width < 640) setParticleScale(2.0)  
+            else if (width < 768) setParticleScale(2.2)  
+            else if (width < 1024) setParticleScale(2.5)  
+            else setParticleScale(2.2)  
+        }  
+        handleResize()  
+        window.addEventListener('resize', handleResize)  
+        return () => window.removeEventListener('resize', handleResize)  
+    }, [])  
 
     return (
         <section
@@ -56,7 +56,7 @@ const Hero = () => {
                 </div>
             </div>
         </section>
-    );
-};
+    )  
+}  
 
-export default Hero;
+export default Hero  

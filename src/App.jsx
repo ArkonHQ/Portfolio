@@ -3,6 +3,7 @@ import Hero from "./components/Hero.jsx";
 import ParticlesBackground from "./components/ParticlesBackground.jsx";
 import CustomCursor from "./components/CustomCursor.jsx";
 import About from "./components/About.jsx";
+import Projects from "../Portfolio/src/sections/Projects.jsx";
 
 const App = () => {
     return (
@@ -11,6 +12,7 @@ const App = () => {
             <Header />
             <Hero />
             <About />
+            <Projects />
             <CustomCursor />
         </div>
     );

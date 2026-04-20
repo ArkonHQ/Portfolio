@@ -1,92 +1,91 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiGithub, FiLinkedin, FiMenu, FiX, FiSend } from 'react-icons/fi';
-import { useState, useEffect } from "react";
-import { navContent } from '../constants/index.js';
-import { Link as ScrollLink } from 'react-scroll';
+import { motion, AnimatePresence } from 'framer-motion' 
+import { FiGithub, FiLinkedin, FiMenu, FiX, FiSend } from 'react-icons/fi' 
+import { useState, useEffect } from "react" 
+import { navContent } from '../constants/index.js' 
+import { Link as ScrollLink } from 'react-scroll' 
 
 const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [contactFormOpen, setContactFormOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const [activeSection, setActiveSection] = useState('home');
-    const [formStatus, setFormStatus] = useState({ type: '', message: '' });
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isOpen, setIsOpen] = useState(false) 
+    const [contactFormOpen, setContactFormOpen] = useState(false) 
+    const [scrolled, setScrolled] = useState(false) 
+    const [activeSection, setActiveSection] = useState('home') 
+    const [formStatus, setFormStatus] = useState({ type: '', message: '' }) 
+    const [isSubmitting, setIsSubmitting] = useState(false) 
 
-    const toggleMenu = () => setIsOpen(!isOpen);
-    const openContactForm = () => setContactFormOpen(true);
-    const closeContactForm = () => setContactFormOpen(false);
+    const toggleMenu = () => setIsOpen(!isOpen) 
+    const openContactForm = () => setContactFormOpen(true) 
+    const closeContactForm = () => setContactFormOpen(false) 
 
     // Handle scroll effects
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
+            setScrolled(window.scrollY > 20) 
 
-            // Update active section based on scroll position
-            const sections = ['home', 'about', 'projects', 'contact'];
-            const scrollPos = window.scrollY + 100;
+            const sections = ['home', 'about', 'projects', 'contact'] 
+            const scrollPos = window.scrollY + 100 
             for (const section of sections) {
-                const element = document.getElementById(section);
+                const element = document.getElementById(section) 
                 if (element) {
-                    const offsetTop = element.offsetTop;
-                    const offsetBottom = offsetTop + element.offsetHeight;
+                    const offsetTop = element.offsetTop 
+                    const offsetBottom = offsetTop + element.offsetHeight 
                     if (scrollPos >= offsetTop && scrollPos < offsetBottom) {
-                        setActiveSection(section);
-                        break;
+                        setActiveSection(section) 
+                        break 
                     }
                 }
             }
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+        } 
+        window.addEventListener('scroll', handleScroll) 
+        return () => window.removeEventListener('scroll', handleScroll) 
+    }, []) 
 
     // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setFormStatus({ type: '', message: '' });
+        e.preventDefault() 
+        setIsSubmitting(true) 
+        setFormStatus({ type: '', message: '' }) 
 
-        // API call
+        // Simulate API call
         setTimeout(() => {
-            setFormStatus({ type: 'success', message: 'Message sent! I’ll get back to you soon.' });
-            setIsSubmitting(false);
+            setFormStatus({ type: 'success', message: 'Message sent! I’ll get back to you soon.' }) 
+            setIsSubmitting(false) 
             setTimeout(() => {
-                setFormStatus({ type: '', message: '' });
-                closeContactForm();
-            }, 2000);
-        }, 1500);
-    };
+                setFormStatus({ type: '', message: '' }) 
+                closeContactForm() 
+            }, 2000) 
+        }, 1500) 
+    } 
 
     return (
         <>
             <header
                 className={`fixed top-0 w-full z-50 transition-all duration-500 ${
                     scrolled
-                        ? 'bg-black/80 backdrop-blur-xl shadow-lg'
+                        ? 'bg-black/80 backdrop-blur-md shadow-lg border-b border-white/10'
                         : 'bg-transparent'
                 }`}
             >
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
-
-                    {/* LOGO with 3D tilt effect */}
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between cursor-none h-16 md:h-20">
+                    {/* LOGO */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ type: "spring", stiffness: 100, damping: 25, delay: 0.3 }}
+                        initial={{opacity: 0, x: -50}}
+                        animate={{opacity: 1, x: 0}}
+                        transition={{type: "spring", stiffness: 100, damping: 25, delay: 0.3}}
                         className="flex items-center cursor-none group"
-                        whileHover={{ scale: 1.02 }}
+                        whileHover={{scale: 1.02}}
                     >
-                        <div className="flex items-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white h-10 w-10 justify-center rounded-xl font-bold text-xl mr-3 shadow-lg group-hover:shadow-cyan-500/30 transition-all">
+                        <div
+                            className="flex items-center bg-linear-to-r cursor-none from-cyan-500 to-blue-600 text-white h-10 w-10 justify-center rounded-xl font-bold text-xl mr-3 shadow-lg group-hover:shadow-cyan-500/30 transition-all">
                             A
                         </div>
-                        <span className="text-xl font-bold bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">
-                            Arkon
-                        </span>
+                        <div
+                            className="text-xl font-bold tracking-tighter bg-linear-to-r from-white to-gray-400 bg-clip-text text-transparent cursor-none">Arkon
+                        </div>
                     </motion.div>
 
-                    {/* DESKTOP NAVIGATION */}
+                    {/* DESKTOP NAVIGATION – Underline + Glow */}
                     <nav className="hidden lg:flex space-x-8">
-                        {navContent.map((item, i) => (
+                        {navContent.map((item) => (
                             <ScrollLink
                                 key={item}
                                 to={item.toLowerCase()}
@@ -95,20 +94,22 @@ const Header = () => {
                                 offset={-70}
                                 duration={500}
                                 onSetActive={() => setActiveSection(item.toLowerCase())}
-                                className={`relative text-gray-300 hover:text-white transition-colors duration-300 font-medium group cursor-none ${
+                                className={`relative text-gray-300 hover:text-white transition-colors duration-300 font-medium group cursor- none ${
                                     activeSection === item.toLowerCase() ? 'text-white' : ''
                                 }`}
                             >
                                 {item}
-                                <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 ${
-                                    activeSection === item.toLowerCase() ? 'w-full' : 'w-0 group-hover:w-full'
+                                <span className={`absolute left-0 -bottom-1 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 ${
+                                    activeSection === item.toLowerCase()
+                                        ? 'w-full'
+                                        : 'w-0 group-hover:w-full'
                                 }`} />
                             </ScrollLink>
                         ))}
                     </nav>
 
                     {/* DESKTOP SOCIAL + HIRE BUTTON */}
-                    <div className="hidden md:flex items-center  space-x-4">
+                    <div className="hidden md:flex items-center space-x-4">
                         <motion.a
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -116,7 +117,7 @@ const Header = () => {
                             href="https://github.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-gray-400 cursor-none hover:text-white transition-colors duration-300"
+                            className="text-gray-400 hover:text-white cursor-none transition-colors duration-300"
                             whileHover={{ y: -2 }}
                         >
                             <FiGithub className="w-5 h-5" />
@@ -128,7 +129,7 @@ const Header = () => {
                             href="https://linkedin.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-gray-400 cursor-none hover:text-white transition-colors duration-300"
+                            className="text-gray-400 hover:text-white cursor-none transition-colors duration-300"
                             whileHover={{ y: -2 }}
                         >
                             <FiLinkedin className="w-5 h-5" />
@@ -138,7 +139,7 @@ const Header = () => {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 1.6 }}
-                            className="px-5 py-2 rounded-full cursor-none bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-md hover:shadow-cyan-500/30 transition-all duration-300"
+                            className="px-5 py-2 rounded-full bg-linear-to-r cursor-none from-cyan-500 to-blue-600 text-white font-semibold shadow-md hover:shadow-cyan-500/30 transition-all duration-300"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.98 }}
                         >
@@ -158,7 +159,7 @@ const Header = () => {
                     </div>
                 </div>
 
-                {/* MOBILE MENU */}
+                {/* MOBILE MENU (slide-in from right) */}
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div
@@ -194,8 +195,8 @@ const Header = () => {
                             </div>
                             <button
                                 onClick={() => {
-                                    toggleMenu();
-                                    openContactForm();
+                                    toggleMenu() 
+                                    openContactForm() 
                                 }}
                                 className="mt-2 w-full px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold transition-all hover:shadow-lg"
                             >
@@ -206,7 +207,7 @@ const Header = () => {
                 </AnimatePresence>
             </header>
 
-            {/* CONTACT FORM MODAL */}
+            {/* CONTACT FORM MODAL (unchanged, but improved styling) */}
             <AnimatePresence>
                 {contactFormOpen && (
                     <motion.div
@@ -286,7 +287,7 @@ const Header = () => {
                 )}
             </AnimatePresence>
         </>
-    );
-};
+    ) 
+} 
 
-export default Header;
+export default Header 
