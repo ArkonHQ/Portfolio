@@ -58,13 +58,10 @@ const Header = () => {
 
     return (
         <>
-            <header
-                className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-                    scrolled
-                        ? 'bg-black/80 backdrop-blur-md shadow-lg border-b border-white/10'
-                        : 'bg-transparent'
-                }`}
-            >
+            <header className={`fixed top-0 w-full z-50 transition-all duration-500
+             ${scrolled ? 
+                'bg-black/80 backdrop-blur-md shadow-lg border-b border-white/10' :
+                'bg-transparent'}`}>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between cursor-none h-16 md:h-20">
                     {/* LOGO */}
                     <motion.div
@@ -110,7 +107,7 @@ const Header = () => {
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 1.3 }}
-                            href="https://github.com"
+                            href="https://github.com/ArkonHQ/Arkon"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-400 hover:text-white cursor-none transition-colors duration-300"
@@ -163,7 +160,7 @@ const Header = () => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: '100%' }}
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="fixed top-16 right-0 bottom-0 w-64 bg-black/90 backdrop-blur-2xl shadow-2xl z-50 p-6 flex flex-col gap-6 border-l border-white/10"
+                            className="fixed top-16 right-0 bottom-0 w-64 bg-black/90 backdrop-blur-2xl shadow-2xl h-screen z-50 p-6 flex flex-col gap-6 border-l border-white/10"
                         >
                             <nav className="flex flex-col gap-4">
                                 {navContent.map((item) => (
@@ -175,14 +172,14 @@ const Header = () => {
                                         offset={-70}
                                         duration={500}
                                         onClick={toggleMenu}
-                                        className="text-gray-300 hover:text-white text-lg font-medium py-2 border-b border-white/10 hover:border-cyan-400 transition-all"
+                                        className="text-gray-300 hover:text-white text-lg font-medium py-2 border-b border-white/10 hover:border-slate-700 transition-all"
                                     >
                                         {item}
                                     </ScrollLink>
                                 ))}
                             </nav>
                             <div className="flex gap-5 pt-4 border-t border-white/20">
-                                <a href="https://github.com" target="_blank" className="text-gray-400 hover:text-white">
+                                <a href="https://github.com/ArkonHQ/Arkon" target="_blank" className="text-gray-400 hover:text-white">
                                     <FiGithub className="w-5 h-5" />
                                 </a>
                                 <a href="https://linkedin.com" target="_blank" className="text-gray-400 hover:text-white">

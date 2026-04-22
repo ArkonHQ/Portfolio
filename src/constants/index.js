@@ -1,6 +1,6 @@
 // Navbar content
 const navContent = [
-    "Home", "About", "Projects", "Experience", "Contact"
+    "Home", "Projects", "About", "Contact"
 ]
 const skillsOuter = [
     { name: "React", icon: "/assets/logos/react.svg" },

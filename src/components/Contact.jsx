@@ -67,7 +67,7 @@ const Contact = () => {
             circleRef.current,{
                 scale: 17,
                 backgroundColor: '#636363',
-                boxShadow: '0 0 50px 20px rgba(233, 213, 255, 0.5)',
+                boxShadow: '0 0 50px 20px rgba(0, 0, 0, 0.5)',
                 ease: 'power2.inOut',
                 duration: 0.5,
             }, 0.5,
@@ -91,7 +91,7 @@ const Contact = () => {
         <section
             ref={sectionRef}
             id={'contact'}
-            className={'relative h-screen flex items-center justify-center bg-[#CACBD1]'}
+            className={'relative h-screen flex items-center justify-center overflow-hidden bg-[#CACBD1]'}
             style={{ overscrollBehavior: 'none'}}>
 
         {/*  Simple circle  */}
@@ -113,7 +113,7 @@ const Contact = () => {
                         I design and develop clean, responsive, and user-friendly web experiences using modern frontend tools. Fast delivery, clear communication, and reliable results.
                     </p>
 
-                    <button className={'px-10 py-2 rounded-xl bg-white hover:bg-black hover:text-white transition-all duration-500 scale-[0.1] absolute sm:mt-9 mt07 text-nowrap text-black cursor-none'}>
+                    <button className={'px-10 py-2 max-sm:mt-6 rounded-xl bg-white hover:bg-black hover:text-white transition-all duration-500 scale-[0.1] absolute sm:mt-9 mt07 text-nowrap text-black cursor-none'}>
                         Contact me
                     </button>
                 </div>
