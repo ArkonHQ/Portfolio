@@ -109,14 +109,14 @@ const About = () => {
             ref={sectionRef}
             className="relative w-full py-24 px-6 md:px-12 lg:px-24 bg-white dark:bg-gray-950 overflow-hidden"
         >
-            {/* ========== BACKGROUND – floating orbs + scroll‑animated stars ========== */}
+            {/* ========== Star BACKGROUND ========== */}
             <div className="absolute inset-0 pointer-events-none z-0">
-                {/* Floating orbs (CSS only) */}
+                {/* Floating orbs */}
                 <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-500/10 blur-3xl animate-[float_20s_ease-in-out_infinite]" />
                 <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl animate-[float_25s_ease-in-out_infinite] delay-1000" />
                 <div className="absolute top-3/4 left-1/2 w-56 h-56 rounded-full bg-cyan-500/10 blur-3xl animate-[float_18s_ease-in-out_infinite] delay-500" />
 
-                {/* Stars – NO CSS animation, only GSAP scroll movement */}
+                {/* Stars */}
                 {[...Array(50)].map((_, i) => {
                     const size = 2 + Math.random() * 4   
                     const top = Math.random() * 100   
@@ -194,7 +194,7 @@ const About = () => {
                                     <p className="text-gray-400 text-sm mt-1">
                                         {item.description}
                                     </p>
-                                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-white/50 to-transparent group-hover:w-full transition-all duration-500"></div>
+                                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-white/50 to-transparent group-hover:w-full transition-all duration-500"></div>
                                 </div>
                             ))}
                         </div>
