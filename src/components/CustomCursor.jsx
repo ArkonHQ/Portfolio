@@ -19,10 +19,10 @@ const CustomCursor = () => {
             yPercent: -50,
         });
 
-        // Store current mouse coordinates (for the border to follow)
+        // Store current mouse coordinates
         let mouseX = 0, mouseY = 0;
 
-        // Move dot INSTANTLY (no GSAP animation, direct set)
+        // Move dot INSTANTLY
         const handleMouseMove = (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
@@ -88,7 +88,7 @@ const CustomCursor = () => {
 
     return (
         <>
-            {/* Glow trail particles container (optional – add if you want extra flair) */}
+            {/* Glow trail particles container */}
             <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-[9999]">
                 {/* Main dot */}
                 <div

@@ -7,6 +7,7 @@ import ParticlesBackground from "./components/ParticlesBackground.jsx";
 import CustomCursor from "./components/CustomCursor.jsx";
 import About from "./components/About.jsx";
 import Projects from './components/Projects.jsx'
+import Contact from "./components/Contact.jsx";
 
 const App = () => {
     useEffect(() => {
@@ -23,8 +24,9 @@ const App = () => {
             <ParticlesBackground />
             <Header />
             <Hero />
-            <About />
             <Projects />
+            <About />
+            <Contact />
             <CustomCursor />
         </div>
     );

@@ -75,11 +75,7 @@ const Header = () => {
                         whileHover={{scale: 1.02}}
                     >
                         <div
-                            className="flex items-center bg-linear-to-r cursor-none from-cyan-500 to-blue-600 text-white h-10 w-10 justify-center rounded-xl font-bold text-xl mr-3 shadow-lg group-hover:shadow-cyan-500/30 transition-all">
-                            A
-                        </div>
-                        <div
-                            className="text-xl font-bold tracking-tighter bg-linear-to-r from-white to-gray-400 bg-clip-text text-transparent cursor-none">Arkon
+                            className="text-2xl font-bold tracking-tighter bg-linear-to-r from-white to-gray-400 bg-clip-text text-transparent cursor-none">Arkon
                         </div>
                     </motion.div>
 
@@ -99,7 +95,7 @@ const Header = () => {
                                 }`}
                             >
                                 {item}
-                                <span className={`absolute left-0 -bottom-1 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 ${
+                                <span className={`absolute left-0 -bottom-1 h-0.5 bg-gradient-to-r  from-slate-800/80 to-gray-600/80 transition-all duration-300 ${
                                     activeSection === item.toLowerCase()
                                         ? 'w-full'
                                         : 'w-0 group-hover:w-full'
@@ -139,7 +135,7 @@ const Header = () => {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 1.6 }}
-                            className="px-5 py-2 rounded-full bg-linear-to-r cursor-none from-cyan-500 to-blue-600 text-white font-semibold shadow-md hover:shadow-cyan-500/30 transition-all duration-300"
+                            className="px-5 py-2 rounded-full bg-linear-to-r cursor-none from-slate-700/50 to-gray-400 text-white font-semibold shadow-lg hover:shadow-white/30 transition-all duration-300"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.98 }}
                         >
@@ -198,7 +194,7 @@ const Header = () => {
                                     toggleMenu() 
                                     openContactForm() 
                                 }}
-                                className="mt-2 w-full px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold transition-all hover:shadow-lg"
+                                className="mt-2 w-full px-4 py-2 rounded-full bg-linear-to-r from-slate-400 to-slate-800 text-white font-semibold transition-all hover:shadow-lg"
                             >
                                 Contact Me
                             </button>

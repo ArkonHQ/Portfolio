@@ -76,14 +76,14 @@ const About = () => {
             toggleActions: "play none none reverse"
         }))   
 
-        // Star animation (scroll‑linked)
+        // Star animation
         starsRef.current.forEach((star, index) => {
             const direction = index % 2 === 0 ? 1 : -1   
             const speed = 0.5 + Math.random() * 0.5   
             gsap.to(star, {
                 x: direction * (150 + (index % 10) * 20),   // horizontal travel distance
                 y: direction * (100 + (index % 8) * 15),    // vertical travel distance
-                rotate: direction * 360,                    // full rotation                 // 0.5 to 1.0 (higher = faster relative to scroll)
+                rotate: direction * 360,                    // full rotation
                 ease: "none",
                 scrollTrigger: {
                     trigger: sectionRef.current,

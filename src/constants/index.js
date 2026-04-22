@@ -1,4 +1,4 @@
-// Nav bar content
+// Navbar content
 const navContent = [
     "Home", "About", "Projects", "Experience", "Contact"
 ]
