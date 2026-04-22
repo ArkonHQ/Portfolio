@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projectImage } from "../constants/index.js";
 import { SlShareAlt } from "react-icons/sl";
+import StarsBackground from "./StarsBackground.jsx";
 
 const Projects = () => {
     const sectionRef = useRef(null)
@@ -92,6 +93,7 @@ const Projects = () => {
         }
         )
 
+
         //Horizontal Scrolling animation
         const horizontalScroll = gsap.to('.panel', {
             xPercent: -100 * (projectImage.length - 1),
@@ -143,8 +145,10 @@ const Projects = () => {
     return (
         <section
             id={'projects'}
-            className={'relative w-full overflow-hidden py-20 bg-black'}
+            className={'relative w-full overflow-hidden py-20 '}
             ref={sectionRef}>
+
+            <StarsBackground triggerRef={sectionRef} orbColors={["slate", "gray", "zinc"]} />
 
             {/*  Section Title  */}
             <div className={'container mx-auto px-4 mb-16 relative z-10'}>
